@@ -143,7 +143,7 @@ class TestInlineMarkdownSyntax(unittest.TestCase):
     def test_extract_markdown_images(self):
         text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
         self.assertEqual(
-            extract_markdown_images(text),
+            extract_markdown_image(text),
             [
                 ("rick roll", "https://i.imgur.com/aKaOqIh.gif"),
                 ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg"),
@@ -153,7 +153,7 @@ class TestInlineMarkdownSyntax(unittest.TestCase):
     def test_extract_markdown_links(self):
         text = "This is text with a [link](https://www.example.com) and [another link](https://www.example.org)"
         self.assertEqual(
-            extract_markdown_links(text),
+            extract_markdown_link(text),
             [
                 ("link", "https://www.example.com"),
                 ("another link", "https://www.example.org"),
