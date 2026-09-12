@@ -60,6 +60,8 @@ def links_splitter_helper(
 ) -> list[TextNode]:
     text = node.text
     text_type = TextType.LINK
+    if node.text.strip() == "":
+        return []
     if image_link_format:
         text_type = TextType.IMAGE_LINK
     text_nodes: list[TextNode] = []
@@ -70,11 +72,11 @@ def links_splitter_helper(
     for alt_text, url in extractions:
         marker: str = f"{image_link_format}[{alt_text}]({url})".strip()
         text_parts: list[str] = remaning_text.split(marker, 1)
-        if text_parts[0]:
+        if text_parts[0].strip() != "":
             text_nodes.append(TextNode(text_parts[0], TextType.PLAIN))
         text_nodes.append(TextNode(alt_text, text_type, url))
         remaning_text = text_parts[1]
-    if remaning_text:
+    if remaning_text.strip() != "":
         text_nodes.append(TextNode(remaning_text, TextType.PLAIN))
     return text_nodes
 
