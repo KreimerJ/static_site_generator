@@ -99,3 +99,20 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
         else:
             new_nodes.extend(links_splitter_helper(node, extract_markdown_link))
     return new_nodes
+
+
+def text_to_textnodes(text: str) -> list[TextNode]:
+    if text.strip() == "":
+        return []
+    text_nodes: list[TextNode] = split_nodes_link(
+        split_nodes_image([TextNode(text, TextType.PLAIN)])
+    )
+    delimiters: dict[str, TextType] = {
+        "**": TextType.BOLD,
+        "_": TextType.ITALIC,
+        "`": TextType.CODE,
+    }
+    for delimiter, text_type in delimiters.items():
+        text_nodes = split_nodes_delimiter(text_nodes, delimiter, text_type)
+
+    return text_nodes

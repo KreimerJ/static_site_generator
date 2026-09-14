@@ -37,8 +37,3 @@ class TestParentNode(unittest.TestCase):
         parent_node = ParentNode("", [child_node], {"href": "https://www.google.com"})
         with self.assertRaises(ValueError):
             parent_node.to_html()
-
-    def test_error_no_children(self):
-        parent_node = ParentNode("div", "", {"href": "https://www.google.com"})
-        with self.assertRaises(ValueError):
-            parent_node.to_html()

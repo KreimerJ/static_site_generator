@@ -433,3 +433,52 @@ class TestInlineMarkdownSyntax(unittest.TestCase):
                 ),
             ],
         )
+
+    def test_text_to_textnodes(self):
+        text: str = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        self.assertEqual(
+            text_to_textnodes(text),
+            [
+                TextNode("This is ", TextType.PLAIN),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.PLAIN),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.PLAIN),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.PLAIN),
+                TextNode(
+                    "obi wan image",
+                    TextType.IMAGE_LINK,
+                    "https://i.imgur.com/fJRm4Vk.jpeg",
+                ),
+                TextNode(" and a ", TextType.PLAIN),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+        )
+
+    def test_text_to_textnodes_with_underscores_in_urls_and_images(self):
+        text = "Check [this link](https://boot.dev/python_course) and ![my cat](https://site.com/cat_pic.png)"
+        nodes = text_to_textnodes(text)
+        self.assertEqual(
+            nodes,
+            [
+                TextNode("Check ", TextType.PLAIN),
+                TextNode("this link", TextType.LINK, "https://boot.dev/python_course"),
+                TextNode(" and ", TextType.PLAIN),
+                TextNode("my cat", TextType.IMAGE_LINK, "https://site.com/cat_pic.png"),
+            ],
+        )
+
+    def test_text_to_textnodes_consecutive_delimiters(self):
+        text = "**bold one** **bold two** and _italic one_ _italic two_"
+        nodes = text_to_textnodes(text)
+        self.assertEqual(
+            nodes,
+            [
+                TextNode("bold one", TextType.BOLD),
+                TextNode("bold two", TextType.BOLD),
+                TextNode(" and ", TextType.PLAIN),
+                TextNode("italic one", TextType.ITALIC),
+                TextNode("italic two", TextType.ITALIC),
+            ],
+        )

@@ -1,9 +1,7 @@
 from enum import Enum
 from typing import override
 
-from htmlnode import HTMLNode
 from leafnode import LeafNode
-from src import leafnode
 
 
 class TextType(Enum):
