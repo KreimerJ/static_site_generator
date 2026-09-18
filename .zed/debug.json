@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Debug Failing Block Test",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "unittest",
+    "args": ["src/test_block_markdown_syntax.py"],
+    "cwd": "${workspaceFolder}"
+  },
+  {
+    "label": "Debug All Unit Tests",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "unittest",
+    "args": ["discover", "-s", "src"],
+    "cwd": "${workspaceFolder}"
+  }
+]
