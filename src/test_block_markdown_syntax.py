@@ -142,3 +142,57 @@ class TestBlockMarkdown(unittest.TestCase):
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+
+    def test_heading(self):
+        md: str = dedent("""
+             ## This is a heading with **bold** and `code`
+
+
+             # This is heading one
+
+
+             #### This is heading 4
+            """)
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><h2>This is a heading with <b>bold</b> and <code>code</code></h2><h1>This is heading one</h1><h4>This is heading 4</h4></div>",
+        )
+
+    def test_blockquote(self):
+        md = dedent("""
+            > This is the first line of a quote.
+            > This is the second line with **bold** text.
+            """)
+        self.assertEqual(
+            markdown_to_html_node(md).to_html(),
+            "<div><blockquote>This is the first line of a quote.This is the second line with <b>bold</b> text.</blockquote></div>",
+        )
+
+    def test_unordered_list(self):
+        md = dedent("""
+
+            - First item with **bold** text
+            - Second item with _italic_ text
+            - Third item with `code`
+            """)
+
+        self.assertEqual(
+            markdown_to_html_node(md).to_html(),
+            "<div><ul><li>First item with <b>bold</b> text</li><li>Second item with <i>italic</i> text</li><li>Third item with <code>code</code></li></ul></div>",
+        )
+
+    def test_ordered_list(self):
+        md = dedent("""
+
+            1. First item with **bold** text
+            2. Second item with _italic_ text
+            3. Third item with `code`
+            """)
+
+        self.assertEqual(
+            markdown_to_html_node(md).to_html(),
+            "<div><ol><li>First item with <b>bold</b> text</li><li>Second item with <i>italic</i> text</li><li>Third item with <code>code</code></li></ol></div>",
+        )

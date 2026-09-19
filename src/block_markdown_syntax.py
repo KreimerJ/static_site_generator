@@ -76,7 +76,7 @@ def block_to_parent_node(markdown_block_text: str) -> ParentNode:
             children: list[HTMLNode] = text_to_children_helper(text.replace("\n", " "))
             return ParentNode(BlockType.PARAGRAPH.html_tag, children)
         case BlockType.HEADING:
-            children = text_to_children_helper(text)
+            children = text_to_children_helper(text_parts[1])
             return ParentNode(
                 f"{BlockType.HEADING.html_tag}{len(text_parts[0])}", children
             )
