@@ -124,3 +124,11 @@ def text_to_ordered_list_children_helper(
         ParentNode("li", text_to_children_helper(line.split(f"{i}. ")[1]))
         for i, line in enumerate(stripped_markdown_block_text.split("\n"), start=1)
     ]
+
+
+def extract_title(markdown_text: str):
+    for block in markdown_to_blocks(markdown_text):
+        if block.startswith("# "):
+            return block.removeprefix("# ").strip()
+
+    raise ValueError("no title found")
