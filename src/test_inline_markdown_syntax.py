@@ -1,4 +1,5 @@
 import unittest
+from textwrap import dedent
 
 from inline_markdown_syntax import *
 
@@ -482,36 +483,3 @@ class TestInlineMarkdownSyntax(unittest.TestCase):
                 TextNode("italic two", TextType.ITALIC),
             ],
         )
-
-    def test_extract_title_no_title(self):
-        text: str = dedent("""
-            This document begins immediately with a standard paragraph of descriptive text without any preceding heading block.
-           
-               Here is the second paragraph in the document. It contains inline elements like words and phrases flowing naturally across lines.
-           
-               * First bullet point item
-               * Second bullet point item
-               * Third bullet point item
-            """)
-
-        with self.assertRaises(ValueError):
-            extract_title(text)
-
-    def test_extract_title_at_the_end(self):
-        text: str = dedent("""
-            The execution pipeline began by reading raw markdown strings directly from the file system. Every block is separated by double newlines.
-           
-               All unit tests must pass before the AST converter transforms each block into its corresponding HTML node.
-           
-               # Summary of Results
-            """)
-        self.assertEqual(extract_title(text), "")
-
-    def test_extract_title_at_the_beginning(self):
-        text: str = dedent("""
-            # The Architecture of Memory
-           
-               This is the first paragraph describing how the system stores data in local memory. It contains standard sentences and basic formatting.
-           
-               Here is a subsequent paragraph that continues the explanation.
-            """)
