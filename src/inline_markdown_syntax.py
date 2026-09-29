@@ -1,7 +1,7 @@
 import re
 from collections.abc import Callable
 
-from src.textnode import TextNode, TextType
+from textnode import TextNode, TextType
 
 
 def delimiter_splitter_helper(
