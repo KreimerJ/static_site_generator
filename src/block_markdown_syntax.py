@@ -2,7 +2,6 @@ from enum import Enum
 
 from htmlnode import HTMLNode
 from inline_markdown_syntax import text_to_textnodes
-from leafnode import LeafNode
 from parentnode import ParentNode
 from textnode import TextNode, TextType
 
@@ -49,7 +48,7 @@ def block_to_block_type(markdown_block_text: str) -> BlockType:
         return BlockType.HEADING
     elif markdown_block_text.startswith("```") and markdown_block_text.endswith("```"):
         return BlockType.CODE
-    elif all(line.startswith("> ") for line in markdown_block_text.split("\n")):
+    elif all(line.startswith(">") for line in markdown_block_text.split("\n")):
         return BlockType.QUOTE
     elif all(line.startswith(("- ", "* ")) for line in markdown_block_text.split("\n")):
         return BlockType.UNORDERED_LIST
@@ -60,12 +59,6 @@ def block_to_block_type(markdown_block_text: str) -> BlockType:
         return BlockType.ORDERED_LIST
     else:
         return BlockType.PARAGRAPH
-
-
-def markdown_to_html_node(markdown_text: str) -> ParentNode:
-    blocks: list[str] = markdown_to_blocks(markdown_text)
-    children: list[HTMLNode] = [block_to_parent_node(block) for block in blocks]
-    return ParentNode("div", children)
 
 
 def block_to_parent_node(markdown_block_text: str) -> ParentNode:
@@ -86,7 +79,7 @@ def block_to_parent_node(markdown_block_text: str) -> ParentNode:
             return ParentNode(BlockType.CODE.html_tag, children)
         case BlockType.QUOTE:
             children = text_to_children_helper(
-                "".join([line.removeprefix("> ") for line in text.split("\n")])
+                " ".join([line.removeprefix(">").strip() for line in text.split("\n")])
             )
             return ParentNode(BlockType.QUOTE.html_tag, children)
         case BlockType.UNORDERED_LIST:
@@ -124,6 +117,12 @@ def text_to_ordered_list_children_helper(
         ParentNode("li", text_to_children_helper(line.split(f"{i}. ")[1]))
         for i, line in enumerate(stripped_markdown_block_text.split("\n"), start=1)
     ]
+
+
+def markdown_to_html_node(markdown_text: str) -> ParentNode:
+    blocks: list[str] = markdown_to_blocks(markdown_text)
+    children: list[HTMLNode] = [block_to_parent_node(block) for block in blocks]
+    return ParentNode("div", children)
 
 
 def extract_title(markdown_text: str):
