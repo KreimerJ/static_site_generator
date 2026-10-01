@@ -16,7 +16,7 @@ def main():
     template: str = os.path.join(os.getcwd(), "template.html")
     docs_dir: str = os.path.join(os.getcwd(), "docs")
 
-    clean_public_and_copy_static_files()
+    clean_public_and_copy_static_files(docs_dir)
     generate_page_recursively(source_dir, template, docs_dir, basepath)
 
 

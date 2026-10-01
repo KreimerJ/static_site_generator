@@ -2,15 +2,14 @@ import os
 import shutil
 
 
-def clean_public_and_copy_static_files() -> None:
-    public_dir: str = os.path.join(os.getcwd(), "public")
+def clean_public_and_copy_static_files(destination_dir: str) -> None:
     static_dir: str = os.path.join(os.getcwd(), "static")
-    if os.path.exists(public_dir):
-        shutil.rmtree(public_dir, ignore_errors=True)
-        os.mkdir(public_dir)
+    if os.path.exists(destination_dir):
+        shutil.rmtree(destination_dir, ignore_errors=True)
+        os.mkdir(destination_dir)
     else:
-        os.mkdir(public_dir)
-    copy_static_files(static_dir, public_dir)
+        os.mkdir(destination_dir)
+    copy_static_files(static_dir, destination_dir)
 
 
 def copy_static_files(source_path, destination_path) -> None:

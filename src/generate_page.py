@@ -14,16 +14,15 @@ def generate_page(
     with open(template, "r") as file_to_read:
         template_text: str = file_to_read.read()
 
-    markdown_to_html_string: str = (
-        markdown_to_html_node(markdown_text)
-        .to_html()
-        .replace('href="/', f'href="{basepath}')
-        .replace('src="/', f'src="{basepath}')
-    )
+    markdown_to_html_string: str = markdown_to_html_node(markdown_text).to_html()
+
     template_text = template_text.replace(
         "{{ Title }}", extract_title(markdown_text)
     ).replace("{{ Content }}", markdown_to_html_string)
 
+    template_text = template_text.replace('href="/', f'href="{basepath}').replace(
+        'src="/', f'src="{basepath}'
+    )
     os.makedirs(os.path.dirname(destination_path), exist_ok=True)
 
     with open(destination_path, "w") as file_to_write:
